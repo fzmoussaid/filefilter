@@ -56,7 +56,7 @@ int file_filter(int nb_instances, std::string path, data_pair* res) {
 
 int main () {  
    int nb_instances = 3;
-   std::string path = "sample_file.dat";
+   std::string path = "sample_file500.dat";
    data_pair res[nb_instances] ;
    file_filter( nb_instances, path, res ); 
   
