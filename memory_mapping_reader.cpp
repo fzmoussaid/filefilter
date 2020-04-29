@@ -8,6 +8,36 @@
 
 #include "headers/memory_mapping_reader.hpp"
 
+
+data_pair* filter_section(const char* path, uint32_t nb_instances, data_pair* res_pair ) {
+    data_pair* data;
+    uint32_t data_size = 0;
+    data = memory_mapper( path, &data_size);
+    
+    for (data_pair* ptr_i = data; ptr_i < data + data_size ; ptr_i++){
+        n_max_val( res_pair, *ptr_i, nb_instances ); 
+    }
+    // clock_t begin = clock();
+    // uint32_t k_largest = selection( data, data_size, nb_instances );
+    // clock_t end = clock();
+    // double time = (double) (end - begin) / CLOCKS_PER_SEC;
+    // std::cout << "Time Spent in selecttion algo : " << time << std::endl;
+    // // for ( int i = 0; i < nb_instances ; i++) {
+    // //     std::cout << "Result n*" << i << ' ' << *(res + i) << '\n';
+    // // }
+    // begin = clock();
+    // get_inf_values( data, data_size, k_largest, res, nb_instances);
+    // end = clock();
+    // time = (double) (end - begin) / CLOCKS_PER_SEC;
+    // std::cout << "Time Spent to get inf values : " << time << std::endl;  
+    if (data != NULL){
+        free(data);
+    }
+
+    return res_pair;
+
+}
+
 uint32_t get_inf_values( data_pair* data, uint32_t data_size,  uint32_t k_largest, uint32_t* res, uint32_t nb_instances) {
     uint32_t j = 0;
     for (data_pair* ptr_i = data; ptr_i < data + data_size ; ptr_i++){
@@ -20,14 +50,28 @@ uint32_t get_inf_values( data_pair* data, uint32_t data_size,  uint32_t k_larges
     }
     return 0;
 }
+void n_max_val( data_pair *pairs, data_pair new_val, uint32_t nb_instances ) {
+   data_pair* res;
+   res = pairs;
+   for (data_pair* ptr = pairs; ptr < pairs + nb_instances; ptr++){ // complexity in time -> linear
+      if ( (*ptr).value < (*res).value ) {
+         res = ptr;
+      }
+   }
 
-// look-up the k-th largest value in an array using the selection algorithm -> complexity on time : linear
+   if ( (*res).value < new_val.value ) {
+      (*res).value = new_val.value;
+      (*res).id = new_val.id;
+   }
+
+}
+
+// look-up the k-th largest value in an array using the selection algorithm -> complexity on time : O(n^2) worst case scenario
 uint32_t selection( data_pair *data, uint32_t data_size, uint32_t k ) { 
     uint32_t maxValue;
     data_pair* tmp_pair = (data_pair*)malloc( 2 * sizeof(uint32_t));
     for (data_pair* ptr_i = data; ptr_i < data + k ; ptr_i++){
         maxValue = (*ptr_i).value;
-        // std::cout << maxValue << std::endl;
         for (data_pair* ptr_j = ptr_i + 1; ptr_j < data + data_size ; ptr_j++){
             if ( (*ptr_j).value >= maxValue ) {
                 maxValue = (*ptr_j).value;
@@ -92,10 +136,8 @@ data_pair* memory_mapper(const char* path, uint32_t* data_size) {
     // std::cout << "File Size :" << file_size << '\n'; 
     // std::cout << "Nb Pages :" << nb_pages << '\n'; 
     // std::cout << "Page size :" << pagesize << '\n'; 
-
-
-    std::cout << "Mapping Region Started ..." << '\n';  
     char* region = (char*)(mmap(NULL, nb_pages * pagesize, PROT_READ, MAP_SHARED, fd, 0));
+    
     if (region == MAP_FAILED) {
        perror("Could not mmap");
        return NULL;
@@ -108,7 +150,7 @@ data_pair* memory_mapper(const char* path, uint32_t* data_size) {
     get_data_pairs(region, data, data_size);
     
     munmap(region, pagesize);
-
+    
     return data;
   
 }

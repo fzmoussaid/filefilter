@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <time.h>
+#include <sys/sysinfo.h>
 
 #include "headers/file_reader.hpp"
 
@@ -55,14 +57,18 @@ int file_filter(int nb_instances, std::string path, data_pair* res) {
 
 
 int main () {  
-   int nb_instances = 3;
-   std::string path = "sample_file500.dat";
+   int nb_instances = 3000;
+   std::string path = "testfiles/sample_file_100000000.dat";
    data_pair res[nb_instances] ;
+   clock_t begin = clock();
    file_filter( nb_instances, path, res ); 
-  
+   clock_t end = clock();
+   double time = (double) (end - begin) / CLOCKS_PER_SEC;
+   std::cout << "Time Spent : " << time << std::endl;
    for ( int i = 0; i < nb_instances ; i++) {
       std::cout << "Result n*" << i << ' ' << res[i].id << '\n';
    }
+
    
    return 0;
 }

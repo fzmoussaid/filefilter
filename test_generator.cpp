@@ -7,7 +7,7 @@ using namespace std;
 void generate_testfile(int nb_samples){
     string data;
     ofstream outfile;
-    outfile.open( ("sample_file" + to_string(nb_samples) + ".dat" ));
+    outfile.open( ("testfiles/sample_file_" + to_string(nb_samples) + ".dat" ));
     
     for ( int i = 0; i < nb_samples ; i++ ) {
         outfile << i << ' ' << std::rand() << endl;   
@@ -19,7 +19,8 @@ void generate_testfile(int nb_samples){
 int main() {
     string data;
     ofstream outfile;
-    int nb_samples = 500;
-    generate_testfile(nb_samples);
+    // for (int i = 500; i < 1e6; i = i + 1e3){
+        generate_testfile(1e8);
+    // }
 
 }
