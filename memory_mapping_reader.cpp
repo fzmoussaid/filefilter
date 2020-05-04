@@ -5,63 +5,193 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <math.h> 
+#include <sys/sysinfo.h>
+#include <omp.h>
+#include <assert.h> 
 
 #include "headers/memory_mapping_reader.hpp"
 
+#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
-data_pair* filter_section(const char* path, uint32_t nb_instances, data_pair* res_pair ) {
-    data_pair* data;
-    uint32_t data_size = 0;
-    data = memory_mapper( path, &data_size);
+void get_data_pairs(char* s, data_pair *data, uint16_t* data_size, uint32_t nb_lines, char* last_element, uint16_t section) {
     
-    for (data_pair* ptr_i = data; ptr_i < data + data_size ; ptr_i++){
-        n_max_val( res_pair, *ptr_i, nb_instances ); 
+    data_pair *ptr;
+    char *pos_pointer, *id_value;
+    char *id, *value;
+    assert(nb_lines != 0);
+    uint32_t i = 1;
+    int8_t nb_proc = get_nprocs();
+    uint32_t nb_total = 0;
+    for(int i = 0; i < nb_proc ; i++) 
+        *(data_size + i) = 0;
+    ptr = data;
+    if (section != 0) {
+        pos_pointer = strchr(s, '\n' );
+        s = pos_pointer + 1;
     }
-    // clock_t begin = clock();
-    // uint32_t k_largest = selection( data, data_size, nb_instances );
-    // clock_t end = clock();
-    // double time = (double) (end - begin) / CLOCKS_PER_SEC;
-    // std::cout << "Time Spent in selecttion algo : " << time << std::endl;
-    // // for ( int i = 0; i < nb_instances ; i++) {
-    // //     std::cout << "Result n*" << i << ' ' << *(res + i) << '\n';
-    // // }
-    // begin = clock();
-    // get_inf_values( data, data_size, k_largest, res, nb_instances);
-    // end = clock();
-    // time = (double) (end - begin) / CLOCKS_PER_SEC;
-    // std::cout << "Time Spent to get inf values : " << time << std::endl;  
-    if (data != NULL){
-        free(data);
+    pos_pointer = strchr(s, '\n' );
+
+
+    while( pos_pointer < last_element && pos_pointer != NULL) {
+        if ( nb_total >  i * nb_lines / nb_proc) {
+            i++;
+        }
+        id_value = strchr(s, ' ' );
+        id = (char*)(malloc(id_value - s + 1));
+        // id = (char*)realloc(id, id_value - s);
+        memcpy(id, s, id_value - s + 1);
+        // std::cout << "point 3-2 : " << (int)(pos_pointer - id_value) << " end" << std::endl;
+        // std::cout << "data_size : " << *data_size[i - 1] << std::endl;
+        if ((int)(pos_pointer - id_value)  < 0) {
+            std::cout << "point 3-2 : " << (int)(pos_pointer - id_value) << " end" << std::endl;    
+        }
+        value = (char*)(malloc(pos_pointer - id_value + 1));
+        // value = (char*)realloc(value, pos_pointer - id_value);
+        memcpy(value, id_value, pos_pointer - id_value + 1);
+        
+
+        // try {
+        (*ptr).id = std::strtol( id , NULL, 10);
+        (*ptr).value = std::strtol( value , NULL, 10);
+        // }
+        //  catch ( std::invalid_argument const &e ) {
+        //     std::cout << "Bad Parsing" << '\n';
+        // if((*ptr).id >= 900060000) {
+        // std::cout << "Id " << (*ptr).id << '\n';
+                
+        // std::cout << "Value " << (*ptr).value << '\n';
+        // //     }
+        //  }
+        //  catch ( std::out_of_range const &e ) {
+        //     std::cout << "Integer overflow" << '\n';
+
+        // }
+
+        ++ptr;
+        ++(*(data_size + i - 1));
+        ++nb_total;
+        s = pos_pointer + 1;
+        pos_pointer = strchr(s, '\n' );
+        free(id);
+        free(value);
+
     }
 
-    return res_pair;
 
 }
 
-uint32_t get_inf_values( data_pair* data, uint32_t data_size,  uint32_t k_largest, uint32_t* res, uint32_t nb_instances) {
-    uint32_t j = 0;
-    for (data_pair* ptr_i = data; ptr_i < data + data_size ; ptr_i++){
-        if ((*ptr_i).value >= k_largest && j < nb_instances){
-            *(res + j) = (*ptr_i).id;  
-            ++j;
-        } else if (j == nb_instances) {
-            return 0;
+data_pair* section_memory_mapping( int* fd, uint16_t* data_size, uint16_t section) {
+
+    size_t pagesize = getpagesize();
+    uint16_t nb_lines = 0;
+    char tmp = ' ';
+    uint8_t nb_proc = get_nprocs();
+    data_pair* data;    
+
+    off64_t file_size = lseek(*fd, 0, SEEK_END);
+    // std::cout << "File    Size is aggain  " << file_size << std::endl;
+    off_t pos = 0;
+    // std::cout << "Mapping of Section : " << section  << " Started.\n"; 
+    // omp_set_lock(lock);
+    if ((section + 1) * pagesize * nb_proc < file_size) {
+    
+        while(tmp != '\n') {
+
+            pos++;
+            lseek(*fd, (section + 1) * pagesize * nb_proc + pos, SEEK_SET);   
+            read(*fd, &tmp, 1);
+            // std::cout << "read : " << tmp << std::endl;
+            
+        }
+    } else {
+        pos = 0;
+    }
+    
+    // lseek(*fd, 0, SEEK_SET);  
+    // std::cout << "pos : ..............................................................." << pos << std::endl;
+    char* region = (char*)(mmap(NULL, pagesize * nb_proc + pos, PROT_READ, MAP_PRIVATE, *fd, section * pagesize * nb_proc));
+
+    // std::cout << " Maaaapped..............................................................." << section << std::endl;
+    if (region == MAP_FAILED) {
+       perror("Could not mmap");
+       return NULL;
+    }
+    // std::cout << "Mapping of Section " << section  << " Ended.\n";  
+    nb_lines = nb_occurences( region, '\n' , region + pagesize * nb_proc + pos);
+    // std::cout << nb_lines << '\n';  
+    data = (data_pair*) malloc( nb_lines * 2 * sizeof(uint64_t)); // allocating memory at once is more performant
+    // std::cout << "Dataallocend in sec " << section << '\n';  
+    get_data_pairs(region, data, data_size, nb_lines, region + pagesize * nb_proc + pos, section);
+    
+    munmap(region, pagesize * nb_proc + pos);
+    lseek(*fd, 0, SEEK_SET); 
+    
+    return data;
+  
+}
+
+
+void filter_section(const char* path, uint16_t nb_instances, data_pair* res_pair ) {
+    int fd = open(path, O_RDONLY);
+    int8_t nb_proc = get_nprocs();
+    size_t pagesize = getpagesize();
+    uint64_t file_size = lseek(fd, 0, SEEK_END);
+    std::cout << "File Size is " << file_size << std::endl;
+    uint16_t* data_size = (uint16_t*)calloc(nb_proc, sizeof(uint16_t));
+    data_pair* data;
+    uint64_t Nb_sections = (file_size % (nb_proc * pagesize) == 0)? file_size / (nb_proc * pagesize) : file_size / (nb_proc * pagesize) + 1;;
+    std::cout << "Nb sections :" << Nb_sections << '\n'; 
+    uint16_t offset = 0;
+    // #pragma omp parallel for
+    for (uint16_t section = 0; section < Nb_sections; section++) {
+        data = section_memory_mapping( &fd, data_size, section);   
+        // std::cout << "data_size : " << *data_size << std::endl;
+        
+        for (uint32_t i =  0; i < nb_proc; i++){
+                offset = 0;
+                if(i != 0)
+                    for (uint32_t j =  0; j < i; j++)
+                        offset = offset + data_size[j];
+                n_max_val_section( res_pair, nb_instances, data + offset, *(data_size + i) ); 
+
+            }
+        if (data != NULL){
+            free(data);
         }
     }
-    return 0;
+    free(data_size);
+    std::cout << "Nb sections :" << Nb_sections << '\n'; 
+
+        // // }
+    close(fd);
+
+
 }
-void n_max_val( data_pair *pairs, data_pair new_val, uint32_t nb_instances ) {
+
+
+
+
+void n_max_val_section( data_pair *res, uint16_t nb_instances, data_pair *pairs ,  uint16_t data_size) {  
+    for (data_pair* ptr = pairs; ptr < pairs + data_size; ptr++){ 
+        // std::cout << "data : " << (*(ptr)).id  << std::endl;
+        n_max_val( res, ptr, nb_instances );
+    }
+
+}
+
+void n_max_val( data_pair *pairs, data_pair* new_val, uint16_t nb_instances ) {  
    data_pair* res;
-   res = pairs;
-   for (data_pair* ptr = pairs; ptr < pairs + nb_instances; ptr++){ // complexity in time -> linear
+   res = pairs; 
+//    std::cout << "Id comp :" << (*new_val).id << " - "; 
+   for (data_pair* ptr = pairs; ptr < pairs + nb_instances; ptr++){ 
       if ( (*ptr).value < (*res).value ) {
          res = ptr;
       }
    }
 
-   if ( (*res).value < new_val.value ) {
-      (*res).value = new_val.value;
-      (*res).id = new_val.id;
+   if ( (*res).value < (*new_val).value ) {
+      (*res).value = (*new_val).value;
+      (*res).id = (*new_val).id;
    }
 
 }
@@ -86,72 +216,41 @@ uint32_t selection( data_pair *data, uint32_t data_size, uint32_t k ) {
     return (*(data + k)).value;
 }
 
-uint32_t nb_occurences(char* s, char c, uint32_t nb) { 
-    uint32_t res = 0; 
-    for (char* i = s; i <  s + nb; i++) {
-        if (*(i) == c) {
-            res++;
+uint32_t get_inf_values( data_pair* data, uint16_t data_size,  uint32_t k_largest, uint32_t* res, uint16_t nb_instances) {
+    uint32_t j = 0;
+    for (data_pair* ptr_i = data; ptr_i < data + data_size ; ptr_i++){
+        if ((*ptr_i).value >= k_largest && j < nb_instances){
+            *(res + j) = (*ptr_i).id;  
+            ++j;
+        } else if (j == nb_instances) {
+            return 0;
         }
-    }           
+    }
+    return 0;
+}
+
+uint32_t nb_occurences(char* s, char c, char* last_element) { 
+    uint32_t res = 0; 
+    // std::cout << "Nb occ start " << std::endl;  
+    char *ptr = s, *pos_pointer;
+    // for (char* i = s; i <  last_element; i++) {
+         
+    //     if (i == NULL) {
+    //         std::cout << "NULL : " << std::endl; 
+    //         return res; 
+    //     }
+    //     if (*(i) == c) {
+    //         res++;
+    //     }
+    // }   
+    pos_pointer = strchr(s, '\n' );
+    while ( pos_pointer < last_element && pos_pointer != NULL) {
+        res++;    
+        s = pos_pointer + 1;
+        pos_pointer = strchr(s, '\n' );
+        // std::cout << "Res " << res << std::endl;    
+    }
+    // std::cout << "Nb occ end " << std::endl;        
   
     return res; 
 } 
-
-void get_data_pairs(char* s, data_pair *data, uint32_t* data_size) {
-    data_pair *ptr;
-    char *pos_pointer, *id_value;
-    char *id, *value;
-
-    ptr = data;
-    pos_pointer = strchr(s, '\n' );
-    while( pos_pointer != NULL ) {
-        // std::cout << "line position " << line_delimiter_pos << '\n';
-        id_value = strchr(s, ' ' );
-        // std::cout << "sep position " << id_value - s << '\n';
-        id = (char*)(malloc(id_value - s));
-        memcpy(id, s, id_value - s);
-        value = (char*)(malloc(pos_pointer - id_value));
-        memcpy(value, id_value, pos_pointer - id_value);
-
-        (*ptr).id = std::stoi( id );
-        (*ptr).value = std::stoi( value );
-        // std::cout << "ID : " << (*ptr).id  << std::endl;
-        // std::cout << "Value : " << (*ptr).value  << std::endl;
-        ++ptr;
-        ++(*data_size);
-        s = pos_pointer + 1;
-        pos_pointer = strchr(s, '\n' );
-    }
-
-}
-
-data_pair* memory_mapper(const char* path, uint32_t* data_size) {
-    int fd = open(path, O_RDONLY);
-    size_t pagesize = getpagesize();
-    
-    uint32_t nb_lines = 0;
-    data_pair* data;
-    auto file_size = lseek(fd, 0, SEEK_END);
-    uint32_t nb_pages = (file_size % pagesize == 0)? file_size / pagesize : file_size / pagesize + 1;
-    // std::cout << "File Size :" << file_size << '\n'; 
-    // std::cout << "Nb Pages :" << nb_pages << '\n'; 
-    // std::cout << "Page size :" << pagesize << '\n'; 
-    char* region = (char*)(mmap(NULL, nb_pages * pagesize, PROT_READ, MAP_SHARED, fd, 0));
-    
-    if (region == MAP_FAILED) {
-       perror("Could not mmap");
-       return NULL;
-    }
-    // std::cout << "Mapping Region Ended." << '\n';    
-    nb_lines = nb_occurences( region, '\n' , file_size);
-    // std::cout << nb_lines << '\n';  
-    data = (data_pair*) malloc( nb_lines * 2 * sizeof(uint32_t)); // allocating memory at once is more performant
-
-    get_data_pairs(region, data, data_size);
-    
-    munmap(region, pagesize);
-    
-    return data;
-  
-}
-

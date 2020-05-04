@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
+#include "headers/struct.hpp"
 
 
 void generate_testfile(int nb_samples){
