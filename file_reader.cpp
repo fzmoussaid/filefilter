@@ -59,7 +59,7 @@ int file_filter(int nb_instances, std::string path, data_pair* res) {
 
 int main () {  
    int nb_instances = 3;
-   std::string path = "testfiles/sample_file_500.dat";
+   std::string path = "testfiles/sample_file_100000000.dat";
    // data_pair res[nb_instances] ;
    data_pair* res = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
    clock_t begin = clock();
