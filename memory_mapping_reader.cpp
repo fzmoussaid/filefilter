@@ -11,10 +11,8 @@
 
 #include "headers/memory_mapping_reader.hpp"
 
-#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
 void get_data_pairs(char* s, data_pair *data, uint16_t* data_size, uint32_t nb_lines, char* last_element, uint16_t section) {
-    
     data_pair *ptr;
     char *pos_pointer, *id_value;
     char *id, *value;
@@ -105,7 +103,6 @@ void get_k_max( char* region,  uint64_t data_size, data_pair *res, uint32_t nb_i
 void filter_section(const char* path, uint32_t nb_instances, data_pair* res_pair ) {
     int fd = open(path, O_RDONLY);
     uint64_t file_size = lseek(fd, 0, SEEK_END);
-    std::cout << "File Size is " << file_size << std::endl;
     res_pair = memory_mapping( &fd, res_pair, nb_instances);   
     close(fd);
 }
@@ -113,7 +110,6 @@ void filter_section(const char* path, uint32_t nb_instances, data_pair* res_pair
 
 void n_max_val_section( data_pair *res, uint32_t nb_instances, data_pair *pairs ,  uint16_t data_size) {  
     for (data_pair* ptr = pairs; ptr < pairs + data_size; ptr++){ 
-        // std::cout << "data : " << (*(ptr)).id  << std::endl;
         n_max_val( res, ptr, nb_instances );
     }
 
@@ -141,7 +137,7 @@ uint32_t selection( data_pair *data, uint32_t data_size, uint32_t k ) {
     data_pair* tmp_pair = (data_pair*)malloc( 2 * sizeof(uint32_t));
     for (data_pair* ptr_i = data; ptr_i < data + k ; ptr_i++){
         maxValue = (*ptr_i).value;
-        for (data_pair* ptr_j = ptr_i + 1; ptr_j < data + data_size ; ptr_j++){
+        for (data_pair* ptr_j = ptr_i + 1; ptr_j < data + data_size ; ptr_j++) {
             if ( (*ptr_j).value >= maxValue ) {
                 maxValue = (*ptr_j).value;
                 *tmp_pair = *ptr_i;
@@ -170,13 +166,11 @@ uint32_t get_inf_values( data_pair* data, uint16_t data_size,  uint32_t k_larges
 
 uint32_t nb_occurences(char* s, char c, char* last_element) { 
     uint32_t res = 0; 
-    char *pos_pointer;
-    pos_pointer = strchr(s, '\n' );
+    char *pos_pointer = strchr(s, '\n' );
     while ( pos_pointer < last_element && pos_pointer != NULL) {
         res++;    
         s = pos_pointer + 1;
         pos_pointer = strchr(s, '\n' );
     }    
-  
     return res; 
 } 
