@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <dirent.h>
+#include <fstream>
+
 
 #include "headers/file_reader.hpp"
 #include "headers/memory_mapping_reader.hpp"
@@ -35,56 +37,101 @@ bool check_equal_datapairs(data_pair* array1, data_pair* array2, uint32_t nb_ins
     return true;
 }
 
+void unit_test_one() {
+    std::string data;
+    std::ofstream outfile;
+    outfile.open( ("testfiles/unit_test_one.dat" ));
+    
+    for ( int i = 0; i < 500 ; i++ ) {
+        outfile << i << ' ' << i << std::endl;   
+    }
+    
+    outfile.close();  
+}
+
+void unit_test_two() {
+    std::string data;
+    std::ofstream outfile;
+    outfile.open( ("testfiles/unit_test_two.dat" ));
+    
+    for ( int i = 0; i < 500 ; i++ ) {
+        if ((i == 30) || (i == 31) || (i == 32))
+            outfile << i << ' ' << i << std::endl;   
+        else
+            outfile << i << ' ' << 0 << std::endl;   
+    }
+    
+    outfile.close();  
+}
+
 
 int main (int argc, char *argv[]) {  
-    DIR *dir;
-    struct dirent *dir_entry;
-    char testfiles_dir[13] = "./testfiles/"; 
-    dir = opendir(testfiles_dir);
-    if (dir != NULL){
-        while (dir_entry = readdir(dir)){
-            int nb_instances = 3;
-            char* file_path = (char*)malloc(strlen(testfiles_dir) + strlen(dir_entry->d_name)); 
-            strcpy(file_path, testfiles_dir);
-            strcat(file_path, dir_entry->d_name);
-            
-            if ( dir_entry->d_type == DT_REG ) {
-                std::cout << "Filename path: " << file_path << std::endl; 
-                data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
-                data_pair* res_io = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    unit_test_one();
+    unit_test_two();
+    int nb_instances = 3;
+    char file_path_one[] = "testfiles/unit_test_one.dat" ;
 
-                clock_t begin = clock();
-                filter_section(file_path, nb_instances, res_mapping);
-                clock_t end = clock();
-                double time = (double) (end - begin) / CLOCKS_PER_SEC;
-                std::cout << "Time Spent to mapped version : " << time << std::endl; 
+    data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    data_pair* res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
 
-                begin = clock();
-                std::string file(file_path);
-                file_filter(file, nb_instances, res_io);
-                end = clock();
-                time = (double) (end - begin) / CLOCKS_PER_SEC;
-                std::cout << "Time Spent to io version : " << time << std::endl; 
-                
-                for ( int i = 0; i < nb_instances ; i++) {
-                    std::cout << "Result n*" << i << ' ' << (*(res_mapping + i)).id << '\n';
-                } 
-                for ( int i = 0; i < nb_instances ; i++) {
-                    std::cout << "Result n*" << i << ' ' << (*(res_io + i)).id << '\n';
-                } 
-                // compare result between the two versions
+    data_pair* res_test_one = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    data_pair* res_test_two = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
 
-                if (check_equal_datapairs(res_io, res_mapping, nb_instances)) {
-                    std::cout << "Same Results for the file : " << dir_entry->d_name << std::endl; 
-                } else {
-                    std::cout << "Different Results for the file : " << dir_entry->d_name << std::endl; 
-                }
-                free(res_mapping);
-                free(res_io);
-            }
-        }
+    for (int i = 0; i < nb_instances; i++) {
+        (res_test_one + i)->id = 497 + i;
+        (res_test_one + i)->value = 497 + i;
     }
-    closedir(dir);
 
+    filter_section(file_path_one, nb_instances, res_mapping);
+
+    std::string file(file_path_one);
+    file_filter(file, nb_instances, res_stream);
+
+
+    if (check_equal_datapairs(res_test_one, res_mapping, nb_instances)) {
+        std::cout << "Correct Results for mapping version." << std::endl; 
+    } else {
+        std::cout << "Wrong Results for mapping version." << std::endl; 
+    }
+
+    if (check_equal_datapairs(res_stream, res_test_one, nb_instances)) {
+        std::cout << "Correct Results for stream version. " << std::endl; 
+    } else {
+        std::cout << "Wrong Results for stream version." << std::endl; 
+    }
+
+    free(res_mapping);
+    free(res_stream);
+
+    res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+
+    for (int i = 0; i < nb_instances; i++) {
+        (res_test_two + i)->id = 30 + i;
+        (res_test_two + i)->value = 30 + i;
+    }
+    char file_path_two[] = "testfiles/unit_test_two.dat" ;
+    filter_section(file_path_two, nb_instances, res_mapping);
+    std::string file_two(file_path_two);
+    file_filter(file_two, nb_instances, res_stream);
+
+
+    if (check_equal_datapairs(res_test_two, res_mapping, nb_instances)) {
+        std::cout << "Correct Results for mapping version." << std::endl; 
+    } else {
+        std::cout << "Wrong Results for mapping version." << std::endl; 
+    }
+
+    if (check_equal_datapairs(res_stream, res_test_two, nb_instances)) {
+        std::cout << "Correct Results for stream version. " << std::endl; 
+    } else {
+        std::cout << "Wrong Results for stream version."  << std::endl; 
+    }
+
+    free(res_mapping);
+    free(res_stream);
+    free(res_test_one);
+    free(res_test_two);
+   
     return 0;
 }

@@ -1,0 +1,30 @@
+
+
+This project contains four main parts:
+The first part generates test files.
+Then there is unit tests used for TDD. It checks that the algorithm is robust.
+Then, there are two implementations for the file filter. The first one reads from the stream. The second maps the file to memory.
+The final part compares the two versions through benchmarks. The file "test_result.txt" contains the result of benchmarks.
+
+Compilation: 
+To compile the project use the makefile.
+Use :
+make all 
+To create the executables for test generator, unit tests and executable.
+
+Running:
+Use:
+./testgen 
+to generate test files into the directory "testfiles".
+Use:
+./memmap_filter < path_to_file 
+to read from stdin 
+./memmap_filter path_to_file 
+to read from file
+Use:
+./benchmark
+to launch the benchmarks.
+
+The tests are run on files of different sizes (7.5kB to 2 GB).
+The result of benchmarks states that the implementation that maps the file through memory is more performant. 
+The limitation is that this implementation is specific to UNIX based OS (linux in my case).
