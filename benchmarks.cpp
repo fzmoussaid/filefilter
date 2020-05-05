@@ -22,18 +22,18 @@ int main (int argc, char *argv[]) {
             
             if ( dir_entry->d_type == DT_REG ) {
                 std::cout << "Filename path: " << file_path << std::endl; 
-                data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
-                data_pair* res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+                data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+                data_pair* res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
 
                 clock_t begin = clock();
-                filter_section(file_path, nb_instances, res_mapping);
+                file_mapping_filter(file_path, nb_instances, res_mapping);
                 clock_t end = clock();
                 double time = (double) (end - begin) / CLOCKS_PER_SEC;
                 std::cout << "Time Spent to mapped version : " << time << std::endl; 
 
                 begin = clock();
                 std::string file(file_path);
-                file_filter(file, nb_instances, res_stream);
+                file_stream_filter(file, nb_instances, res_stream);
                 end = clock();
                 time = (double) (end - begin) / CLOCKS_PER_SEC;
                 std::cout << "Time Spent to stream version : " << time << std::endl; 
@@ -44,7 +44,7 @@ int main (int argc, char *argv[]) {
             dir_entry = readdir(dir);
         }
     }  else {
-        std::cout << "Test Directory is missing." << std::endl; 
+        std::cout << "Test Directory is missing. Create a test directory with name testfiles, and generate testfiles." << std::endl; 
     }
     closedir(dir);
 

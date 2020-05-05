@@ -8,6 +8,7 @@
 #include "headers/file_reader.hpp"
 #include "headers/memory_mapping_reader.hpp"
 
+// Sort the data pairs by index
 void sort_by_index( data_pair *data, uint32_t data_size ) { 
     uint32_t maxIndex;
     data_pair* tmp_pair = (data_pair*)malloc( 2 * sizeof(uint32_t));
@@ -26,6 +27,7 @@ void sort_by_index( data_pair *data, uint32_t data_size ) {
 
 }
 
+// Compare datapair arrays
 bool check_equal_datapairs(data_pair* array1, data_pair* array2, uint32_t nb_instances) {
     sort_by_index(array1, nb_instances);
     sort_by_index(array2, nb_instances);
@@ -64,28 +66,27 @@ void unit_test_two() {
     outfile.close();  
 }
 
-
 int main (int argc, char *argv[]) {  
     unit_test_one();
     unit_test_two();
     int nb_instances = 3;
     char file_path_one[] = "testfiles/unit_test_one.dat" ;
 
-    data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
-    data_pair* res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+    data_pair* res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
 
-    data_pair* res_test_one = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
-    data_pair* res_test_two = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    data_pair* res_test_one = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+    data_pair* res_test_two = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
 
     for (int i = 0; i < nb_instances; i++) {
         (res_test_one + i)->id = 497 + i;
         (res_test_one + i)->value = 497 + i;
     }
 
-    filter_section(file_path_one, nb_instances, res_mapping);
+    file_mapping_filter(file_path_one, nb_instances, res_mapping);
 
     std::string file(file_path_one);
-    file_filter(file, nb_instances, res_stream);
+    file_stream_filter(file, nb_instances, res_stream);
 
 
     if (check_equal_datapairs(res_test_one, res_mapping, nb_instances)) {
@@ -103,17 +104,17 @@ int main (int argc, char *argv[]) {
     free(res_mapping);
     free(res_stream);
 
-    res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
-    res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint64_t));
+    res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+    res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
 
     for (int i = 0; i < nb_instances; i++) {
         (res_test_two + i)->id = 30 + i;
         (res_test_two + i)->value = 30 + i;
     }
     char file_path_two[] = "testfiles/unit_test_two.dat" ;
-    filter_section(file_path_two, nb_instances, res_mapping);
+    file_mapping_filter(file_path_two, nb_instances, res_mapping);
     std::string file_two(file_path_two);
-    file_filter(file_two, nb_instances, res_stream);
+    file_stream_filter(file_two, nb_instances, res_stream);
 
 
     if (check_equal_datapairs(res_test_two, res_mapping, nb_instances)) {

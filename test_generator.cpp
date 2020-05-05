@@ -8,7 +8,7 @@
 void generate_testfile(int nb_samples){
     std::string data;
     std::ofstream outfile;
-    outfile.open( ("testfiles/sample_file_" + std::to_string(nb_samples) + ".dat" ));
+    outfile.open( ("test_files/sample_file_" + std::to_string(nb_samples) + ".dat" ));
     
     for ( int i = 0; i < nb_samples ; i++ ) {
         outfile << i << ' ' << std::rand() << std::endl;   
@@ -20,8 +20,9 @@ void generate_testfile(int nb_samples){
 int main() {
     std::string data;
     std::ofstream outfile;
-    for (int i = 500; i < 1e8; i = i + 1e4){
+    for (int i = 500; i < 1e5; i = i + 1e4){
         generate_testfile(i);
     }
-
+    generate_testfile(1e8);
+    generate_testfile(1e9);
 }

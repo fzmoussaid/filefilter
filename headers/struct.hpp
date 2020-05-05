@@ -1,7 +1,8 @@
 #ifndef STRUCT_H 
 #define STRUCT_H 
+
 struct data_pair {
-   uint64_t id;
-   uint64_t value;
+   uint32_t id;
+   uint32_t value;
 };
 #endif
