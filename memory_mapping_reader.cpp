@@ -8,10 +8,43 @@
 #include <sys/sysinfo.h>
 #include <omp.h>
 #include <assert.h>
-
+#include <vector>
+#include <algorithm>
+#include <functional>
 #include "headers/memory_mapping_reader.hpp"
 
+// Read file or stdin and returns the k largest values with their ids in res_pair
+void file_mapping_filter(const char* path, uint32_t k, data_pair* res_pair ) {
+    int fd;
+    if (strlen(path) == 0)
+        fd = STDIN_FILENO;
+    else
+        fd = open(path, O_RDONLY);
 
+    for ( data_pair* ptr = res_pair; ptr < res_pair + k ; ptr++) {
+        ptr->id = 0;
+        ptr->value = 0;
+    } 
+
+    res_pair = memory_mapping( &fd, res_pair, k);
+    close(fd);
+}
+
+// Read file or stdin and returns the k largest values with their ids in res_pair (parallel version) -> Time Complexity  O(k * nb_lines/ nb_proc) Space Complexity is constant
+void file_mapping_filter_parallel(const char* path, uint32_t k, data_pair* res_pair ) {
+    int fd;
+    if (strlen(path) == 0)
+        fd = STDIN_FILENO;
+    else
+        fd = open(path, O_RDONLY);
+
+    for ( data_pair* ptr = res_pair; ptr < res_pair + k ; ptr++) {
+        ptr->id = 0;
+        ptr->value = 0;
+    } 
+    res_pair = memory_mapping_parallel( &fd, res_pair, k);
+    close(fd);
+}
 
 // Map the file of the file descriptor fd and return the k largest values with their ids in res
 data_pair* memory_mapping( int* fd, data_pair* res, uint32_t nb_instances) {
@@ -30,8 +63,8 @@ data_pair* memory_mapping( int* fd, data_pair* res, uint32_t nb_instances) {
 
 }
 
-// Map the file of the file descriptor fd and return the k largest values with their ids in res
-data_pair* memory_mapping_section( int* fd, data_pair* res, uint32_t nb_instances) {
+// Map the file of the file descriptor fd and get the k largest values with their ids in res (parallel version)
+data_pair* memory_mapping_parallel( int* fd, data_pair* res, uint32_t nb_instances) {
     off64_t file_size = lseek(*fd, 0, SEEK_END);
     int8_t nb_proc = get_nprocs();
     char* region = (char*)(mmap(NULL, file_size, PROT_READ, MAP_PRIVATE, *fd, 0));
@@ -40,56 +73,53 @@ data_pair* memory_mapping_section( int* fd, data_pair* res, uint32_t nb_instance
        return NULL;
     }
     data_pair* section_res = (data_pair*)calloc(nb_proc * nb_instances, 2 * sizeof(uint32_t));
-    uint64_t Nb_sections = nb_proc;
+    uint8_t Nb_sections = nb_proc;
+    // Get the k largest values in each section
     #pragma omp parallel for
-    for (int section = 0; section < Nb_sections; section++){
-        
-        std::cout << "Section : " << section << std::endl;
+    for (uint8_t section = 0; section < Nb_sections; section++){
         int start_offset = 0, end_offset = 0;
-        
+        // std::cout << "section " << section << std::endl;
         if (section == Nb_sections - 1) {
-            while(*(region + section * file_size / 4 + start_offset) != '\n')
+            while(*(region + section * file_size / 4 + start_offset - 1) != '\n')
                 start_offset++;
-            get_k_largest_section(region + section * file_size / 4 + start_offset + 1, file_size / 4 + file_size % 4 + start_offset + 1,  section_res + section * nb_instances, nb_instances);
+            get_k_largest_section(region + section * file_size / 4 + start_offset, file_size / 4 + file_size % 4 + start_offset,  section_res + section * nb_instances, nb_instances);
         } else if (section == 0) {
             while(*(region + (section + 1) * file_size / 4 + end_offset) != '\n') {
                 end_offset++;
             }
-            get_k_largest_section(region + section * file_size / 4, file_size / 4 + end_offset, section_res + section * nb_instances, nb_instances);
+            get_k_largest_section(region, file_size / 4 + end_offset, section_res + section * nb_instances, nb_instances);
         } else {
             while(*(region + (section + 1) * file_size / 4 + end_offset) != '\n') {
                 end_offset++;
             }
 
-            while(*(region + section * file_size / 4 + start_offset) != '\n') {
+            while(*(region + section * file_size / 4 + start_offset - 1) != '\n') {
                 start_offset++;
             }
-            std::cout << "End : " << end_offset << std::endl;
-            std::cout << "Start : " << start_offset << std::endl;
-            get_k_largest_section(region + section * file_size / 4 + start_offset + 1, file_size / 4 + end_offset + start_offset + 1, section_res + section * nb_instances, nb_instances);
+            get_k_largest_section(region + section * file_size / 4 + start_offset, file_size / 4 + end_offset - start_offset, section_res + section * nb_instances, nb_instances);
         }
     
     } 
-    uint32_t k_largest = selection(section_res, nb_instances * nb_proc, nb_instances );
+    // Get the k largest values in all sections
+    uint32_t k_largest = nth_element(section_res, nb_instances * nb_proc, nb_instances ); //-> time complexity: linear
     get_inf_values( section_res, nb_instances * nb_proc,  k_largest, res, nb_instances);
-    for ( int i = 0; i < nb_instances ; i++) {
-        std::cout << "Result n*" << i << ' ' << (*(section_res + i)).id << '\n';
-    } 
     
+    free(section_res);
     munmap(region, file_size );
 
     return res;
 
 }
 
-// Parse the mapped region and return the k largest values with their ids in res
+// Parse the mapped section of file and return the k largest values with their ids in res
 void get_k_largest_section( char* region, uint64_t data_size, data_pair *res, uint32_t k) {
     data_pair *ptr = (data_pair*) malloc( 2 * sizeof(uint32_t) );
     char *pos_pointer, *id_value;
     char *id, *value;
     pos_pointer = strchr(region, '\n' );
     int nb_read_char = 0;
-    // while( pos_pointer < region + data_size && pos_pointer != NULL) {
+    // std::cout << "Region " << region << std::endl;
+    
     while( nb_read_char < data_size && pos_pointer != NULL) { 
         id_value = strchr(region, ' ' );
         if(id_value == NULL) {
@@ -97,6 +127,7 @@ void get_k_largest_section( char* region, uint64_t data_size, data_pair *res, ui
             exit (EXIT_FAILURE);
         }
         id = (char*)(malloc(id_value - region + 1));
+        
         memcpy(id, region, id_value - region + 1);
         if((int)(pos_pointer - id_value ) < 0) {
             std::cout << FILE_BAD_FORMAT_ERROR << std::endl;
@@ -107,9 +138,7 @@ void get_k_largest_section( char* region, uint64_t data_size, data_pair *res, ui
         try {
         (*ptr).id = std::strtol( id , NULL, 10);
         (*ptr).value = std::strtol( value , NULL, 10);
-
-        // std::cout << ptr->id << std::endl;
-    
+        // std::cout << "ID " << (*ptr).id << std::endl;
         } catch ( std::invalid_argument const &e ) {
             std::cout << ID_VALUE_ERROR << '\n';
             exit (EXIT_FAILURE);
@@ -120,13 +149,13 @@ void get_k_largest_section( char* region, uint64_t data_size, data_pair *res, ui
          }
         
         n_max_val( res, ptr, k );
-        nb_read_char = nb_read_char + (pos_pointer - region);
+        nb_read_char = nb_read_char + (pos_pointer - region + 1);
         region = pos_pointer + 1;
-        
         pos_pointer = strchr(region, '\n' );
         free(id);
         free(value);
     }
+    free(ptr);
 }
 
 // Parse the mapped region and return the k largest values with their ids in res
@@ -171,28 +200,7 @@ void get_k_max( char* region,  uint64_t data_size, data_pair *res, uint32_t k) {
         free(id);
         free(value);
     }
-}
-
-// Read file or stdin and returns the k largest values with their ids in res_pair
-void file_mapping_filter(const char* path, uint32_t k, data_pair* res_pair ) {
-    int fd;
-    if (strlen(path) == 0)
-        fd = STDIN_FILENO;
-    else
-        fd = open(path, O_RDONLY);
-    res_pair = memory_mapping( &fd, res_pair, k);
-    close(fd);
-}
-
-// Read file or stdin and returns the k largest values with their ids in res_pair
-void file_mapping_filter_section(const char* path, uint32_t k, data_pair* res_pair ) {
-    int fd;
-    if (strlen(path) == 0)
-        fd = STDIN_FILENO;
-    else
-        fd = open(path, O_RDONLY);
-    res_pair = memory_mapping_section( &fd, res_pair, k);
-    close(fd);
+    free(ptr);
 }
 
 // Checks if new value is greater than one of the stored values
@@ -212,7 +220,20 @@ void n_max_val( data_pair *pairs, data_pair* new_val, uint32_t nb_instances ) {
 
 }
 
-// look-up the k-th largest value in an array using the selection algorithm -> complexity on time : O(data_size * k) 
+// look-up the k-th largest value in an array using the selection algorithm -> Complexity linear 
+uint32_t nth_element( data_pair *data, uint32_t data_size, uint32_t k ) {
+    std::vector<int> v;
+
+    for (data_pair* ptr_i = data; ptr_i < data + data_size ; ptr_i++){
+        v.push_back(ptr_i->value);
+    }
+
+    std::nth_element(v.begin(), v.begin()+ k - 1, v.end(), std::greater<int>());
+ 
+    return v[k - 1];
+}
+
+// look-up the k-th largest value in an array using c++ implementation of the n_th element 
 uint32_t selection( data_pair *data, uint32_t data_size, uint32_t k ) {
     uint32_t maxValue;
     data_pair* tmp_pair = (data_pair*)malloc( 2 * sizeof(uint32_t));
@@ -228,7 +249,7 @@ uint32_t selection( data_pair *data, uint32_t data_size, uint32_t k ) {
         }
     }
     free(tmp_pair);
-
+    
     return (*(data + k)).value;
 }
 

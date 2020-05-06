@@ -20,9 +20,10 @@ void generate_testfile(int nb_samples){
 int main() {
     std::string data;
     std::ofstream outfile;
-    for (int i = 500; i < 1e5; i = i + 1e4){
-        generate_testfile(i);
-    }
-    generate_testfile(1e8);
-    generate_testfile(1e9);
+    // for (int i = 500; i < 8e4; i = i + 1e4){
+    //     generate_testfile(i);
+    // }
+    // generate_testfile(1e8);
+    generate_testfile(4e8);
+
 }

@@ -8,6 +8,8 @@
 #include "headers/file_reader.hpp"
 #include "headers/memory_mapping_reader.hpp"
 
+
+
 // Sort the data pairs by index
 void sort_by_index( data_pair *data, uint32_t data_size ) { 
     uint32_t maxIndex;
@@ -24,7 +26,6 @@ void sort_by_index( data_pair *data, uint32_t data_size ) {
         }
     }
     free(tmp_pair);
-
 }
 
 // Compare datapair arrays
@@ -37,6 +38,17 @@ bool check_equal_datapairs(data_pair* array1, data_pair* array2, uint32_t nb_ins
         }
     }
     return true;
+}
+
+// Check if there are duplicates
+bool check_equal_datapairs(data_pair* array1, uint32_t nb_instances) {
+    sort_by_index(array1, nb_instances);
+    for (uint32_t i = 0; i < nb_instances - 1; i++) {
+        if (  (*(array1 + i)).id == (*(array1 + i + 1)).id  ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void unit_test_one() {
@@ -73,6 +85,7 @@ int main (int argc, char *argv[]) {
     char file_path_one[] = "testfiles/unit_test_one.dat" ;
 
     data_pair* res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+    data_pair* res_mapping_parallel = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
     data_pair* res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
 
     data_pair* res_test_one = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
@@ -84,7 +97,7 @@ int main (int argc, char *argv[]) {
     }
 
     file_mapping_filter(file_path_one, nb_instances, res_mapping);
-
+    file_mapping_filter_parallel(file_path_one, nb_instances, res_mapping_parallel);
     std::string file(file_path_one);
     file_stream_filter(file, nb_instances, res_stream);
 
@@ -95,17 +108,26 @@ int main (int argc, char *argv[]) {
         std::cout << "Wrong Results for mapping version." << std::endl; 
     }
 
+    if (check_equal_datapairs(res_test_one, res_mapping_parallel, nb_instances)) {
+        std::cout << "Correct Results for mapping parallel version." << std::endl; 
+    } else {
+        std::cout << "Wrong Results for mapping parallel version." << std::endl; 
+    }
+
     if (check_equal_datapairs(res_stream, res_test_one, nb_instances)) {
         std::cout << "Correct Results for stream version. " << std::endl; 
     } else {
         std::cout << "Wrong Results for stream version." << std::endl; 
     }
 
-    free(res_mapping);
-    free(res_stream);
+    for ( int i = 0; i < nb_instances ; i++) {
+        std::cout << "Result n*" << i << ' ' << (*(res_mapping_parallel + i)).id << '\n';
+    } 
 
-    res_mapping = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
-    res_stream = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+    for ( int i = 0; i < nb_instances ; i++) {
+        std::cout << "Result n*" << i << ' ' << (*(res_mapping + i)).id << '\n';
+    } 
+
 
     for (int i = 0; i < nb_instances; i++) {
         (res_test_two + i)->id = 30 + i;
@@ -115,6 +137,7 @@ int main (int argc, char *argv[]) {
     file_mapping_filter(file_path_two, nb_instances, res_mapping);
     std::string file_two(file_path_two);
     file_stream_filter(file_two, nb_instances, res_stream);
+    file_mapping_filter_parallel(file_path_two, nb_instances, res_mapping_parallel);
 
 
     if (check_equal_datapairs(res_test_two, res_mapping, nb_instances)) {
@@ -129,8 +152,23 @@ int main (int argc, char *argv[]) {
         std::cout << "Wrong Results for stream version."  << std::endl; 
     }
 
+    if (check_equal_datapairs(res_test_two, res_mapping_parallel, nb_instances)) {
+        std::cout << "Correct Results for mapping parallel version." << std::endl; 
+    } else {
+        std::cout << "Wrong Results for mapping parallel version." << std::endl; 
+    }
+
+    for ( int i = 0; i < nb_instances ; i++) {
+        std::cout << "Result n*" << i << ' ' << (*(res_mapping_parallel + i)).id << '\n';
+    } 
+
+    for ( int i = 0; i < nb_instances ; i++) {
+        std::cout << "Result n*" << i << ' ' << (*(res_mapping + i)).id << '\n';
+    } 
+
     free(res_mapping);
     free(res_stream);
+    free(res_mapping_parallel);
     free(res_test_one);
     free(res_test_two);
    

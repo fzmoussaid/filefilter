@@ -32,6 +32,11 @@ int file_stream_filter(std::string path, int nb_instances, data_pair* res) {
    std::ifstream infile; 
    infile.open( path ); 
    
+   for ( data_pair* ptr = res; ptr < res + nb_instances ; ptr++) {
+      ptr->id = 0;
+      ptr->value = 0;
+   } 
+   
    if ( infile.is_open() ) {  
       while ( std::getline(infile, line) ){ // reading line by line is more scalable
          try {

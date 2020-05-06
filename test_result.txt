@@ -1,0 +1,480 @@
+Filename path: ./testfiles/sample_file_250500.dat
+Time Spent to stream version : 0.45025
+Time Spent to mapped version : 0.394336
+Time Spent to mapped parallel version : 0.15799
+Filename path: ./testfiles/sample_file_590500.dat
+Time Spent to stream version : 1.08996
+Time Spent to mapped version : 0.983043
+Time Spent to mapped parallel version : 0.37648
+Filename path: ./testfiles/sample_file_370500.dat
+Time Spent to stream version : 0.640427
+Time Spent to mapped version : 0.587159
+Time Spent to mapped parallel version : 0.243628
+Filename path: ./testfiles/sample_file_30500.dat
+Time Spent to stream version : 0.06491
+Time Spent to mapped version : 0.052473
+Time Spent to mapped parallel version : 0.024137
+Filename path: ./testfiles/sample_file_130500.dat
+Time Spent to stream version : 0.240352
+Time Spent to mapped version : 0.208849
+Time Spent to mapped parallel version : 0.093444
+Filename path: ./testfiles/sample_file_950500.dat
+Time Spent to stream version : 1.66189
+Time Spent to mapped version : 1.50076
+Time Spent to mapped parallel version : 0.581208
+Filename path: ./testfiles/sample_file_990500.dat
+Time Spent to stream version : 1.7019
+Time Spent to mapped version : 1.58054
+Time Spent to mapped parallel version : 0.652888
+Filename path: ./testfiles/sample_file_490500.dat
+Time Spent to stream version : 0.885445
+Time Spent to mapped version : 0.801961
+Time Spent to mapped parallel version : 0.28844
+Filename path: ./testfiles/sample_file_610500.dat
+Time Spent to stream version : 1.07057
+Time Spent to mapped version : 1.00476
+Time Spent to mapped parallel version : 0.369128
+Filename path: ./testfiles/sample_file_920500.dat
+Time Spent to stream version : 1.58468
+Time Spent to mapped version : 1.47522
+Time Spent to mapped parallel version : 0.59138
+Filename path: ./testfiles/sample_file_670500.dat
+Time Spent to stream version : 1.19263
+Time Spent to mapped version : 1.06695
+Time Spent to mapped parallel version : 0.409872
+Filename path: ./testfiles/sample_file_180500.dat
+Time Spent to stream version : 0.316212
+Time Spent to mapped version : 0.287622
+Time Spent to mapped parallel version : 0.129792
+Filename path: ./testfiles/sample_file_740500.dat
+Time Spent to stream version : 1.29888
+Time Spent to mapped version : 1.19738
+Time Spent to mapped parallel version : 0.470544
+Filename path: ./testfiles/sample_file_230500.dat
+Time Spent to stream version : 0.405996
+Time Spent to mapped version : 0.370417
+Time Spent to mapped parallel version : 0.164597
+Filename path: ./testfiles/sample_file_50500.dat
+Time Spent to stream version : 0.10433
+Time Spent to mapped version : 0.085879
+Time Spent to mapped parallel version : 0.039657
+Filename path: ./testfiles/sample_file_290500.dat
+Time Spent to stream version : 0.516718
+Time Spent to mapped version : 0.460952
+Time Spent to mapped parallel version : 0.192123
+Filename path: ./testfiles/sample_file_500.dat
+Time Spent to stream version : 0.010529
+Time Spent to mapped version : 0.001059
+Time Spent to mapped parallel version : 0.001028
+Filename path: ./testfiles/sample_file_400500.dat
+Time Spent to stream version : 0.7303
+Time Spent to mapped version : 0.641046
+Time Spent to mapped parallel version : 0.290474
+Filename path: ./testfiles/sample_file_800500.dat
+Time Spent to stream version : 1.40895
+Time Spent to mapped version : 1.27408
+Time Spent to mapped parallel version : 0.498159
+Filename path: ./testfiles/sample_file_540500.dat
+Time Spent to stream version : 0.942331
+Time Spent to mapped version : 0.866669
+Time Spent to mapped parallel version : 0.397545
+Filename path: ./testfiles/sample_file_650500.dat
+Time Spent to stream version : 1.1431
+Time Spent to mapped version : 1.04344
+Time Spent to mapped parallel version : 0.47947
+Filename path: ./testfiles/sample_file_860500.dat
+Time Spent to stream version : 1.51076
+Time Spent to mapped version : 1.3664
+Time Spent to mapped parallel version : 0.519448
+Filename path: ./testfiles/sample_file_1120500.dat
+Time Spent to stream version : 1.93284
+Time Spent to mapped version : 1.7594
+Time Spent to mapped parallel version : 0.772986
+Filename path: ./testfiles/sample_file_1100500.dat
+Time Spent to stream version : 1.89305
+Time Spent to mapped version : 1.729
+Time Spent to mapped parallel version : 0.654292
+Filename path: ./testfiles/sample_file_840500.dat
+Time Spent to stream version : 1.45379
+Time Spent to mapped version : 1.31732
+Time Spent to mapped parallel version : 0.510108
+Filename path: ./testfiles/sample_file_890500.dat
+Time Spent to stream version : 1.53569
+Time Spent to mapped version : 1.42033
+Time Spent to mapped parallel version : 0.539446
+Filename path: ./testfiles/sample_file_240500.dat
+Time Spent to stream version : 0.422825
+Time Spent to mapped version : 0.382795
+Time Spent to mapped parallel version : 0.163995
+Filename path: ./testfiles/sample_file_520500.dat
+Time Spent to stream version : 0.900459
+Time Spent to mapped version : 0.822531
+Time Spent to mapped parallel version : 0.331154
+Filename path: ./testfiles/sample_file_770500.dat
+Time Spent to stream version : 1.35435
+Time Spent to mapped version : 1.23078
+Time Spent to mapped parallel version : 0.521069
+Filename path: ./testfiles/sample_file_500500.dat
+Time Spent to stream version : 1.02301
+Time Spent to mapped version : 0.814244
+Time Spent to mapped parallel version : 0.35108
+Filename path: ./testfiles/sample_file_960500.dat
+Time Spent to stream version : 1.8202
+Time Spent to mapped version : 1.61801
+Time Spent to mapped parallel version : 0.65692
+Filename path: ./testfiles/sample_file_530500.dat
+Time Spent to stream version : 1.00546
+Time Spent to mapped version : 0.943452
+Time Spent to mapped parallel version : 0.31279
+Filename path: ./testfiles/sample_file_1050500.dat
+Time Spent to stream version : 1.97722
+Time Spent to mapped version : 1.77099
+Time Spent to mapped parallel version : 0.869908
+Filename path: ./testfiles/sample_file_210500.dat
+Time Spent to stream version : 0.389367
+Time Spent to mapped version : 0.381421
+Time Spent to mapped parallel version : 0.166631
+Filename path: ./testfiles/sample_file_660500.dat
+Time Spent to stream version : 1.19721
+Time Spent to mapped version : 1.06265
+Time Spent to mapped parallel version : 0.489462
+Filename path: ./testfiles/sample_file_980500.dat
+Time Spent to stream version : 1.74293
+Time Spent to mapped version : 1.67887
+Time Spent to mapped parallel version : 0.823359
+Filename path: ./testfiles/sample_file_830500.dat
+Time Spent to stream version : 1.59475
+Time Spent to mapped version : 1.40088
+Time Spent to mapped parallel version : 0.727052
+Filename path: ./testfiles/sample_file_60500.dat
+Time Spent to stream version : 0.113207
+Time Spent to mapped version : 0.094664
+Time Spent to mapped parallel version : 0.036362
+Filename path: ./testfiles/sample_file_850500.dat
+Time Spent to stream version : 1.61335
+Time Spent to mapped version : 1.39243
+Time Spent to mapped parallel version : 0.579372
+Filename path: ./testfiles/sample_file_820500.dat
+Time Spent to stream version : 1.53629
+Time Spent to mapped version : 1.48629
+Time Spent to mapped parallel version : 0.699771
+Filename path: ./testfiles/sample_file_870500.dat
+Time Spent to stream version : 1.73761
+Time Spent to mapped version : 1.37878
+Time Spent to mapped parallel version : 0.690305
+Filename path: ./testfiles/sample_file_440500.dat
+Time Spent to stream version : 0.774767
+Time Spent to mapped version : 0.710822
+Time Spent to mapped parallel version : 0.355895
+Filename path: ./testfiles/sample_file_320500.dat
+Time Spent to stream version : 0.585461
+Time Spent to mapped version : 0.641389
+Time Spent to mapped parallel version : 0.297662
+Filename path: ./testfiles/sample_file_970500.dat
+Time Spent to stream version : 1.90698
+Time Spent to mapped version : 1.58189
+Time Spent to mapped parallel version : 0.770528
+Filename path: ./testfiles/sample_file_810500.dat
+Time Spent to stream version : 1.40471
+Time Spent to mapped version : 1.27422
+Time Spent to mapped parallel version : 0.526786
+Filename path: ./testfiles/sample_file_1140500.dat
+Time Spent to stream version : 2.03729
+Time Spent to mapped version : 1.86444
+Time Spent to mapped parallel version : 0.67256
+Filename path: ./testfiles/sample_file_470500.dat
+Time Spent to stream version : 0.832019
+Time Spent to mapped version : 0.794886
+Time Spent to mapped parallel version : 0.280289
+Filename path: ./testfiles/sample_file_10500.dat
+Time Spent to stream version : 0.025972
+Time Spent to mapped version : 0.021302
+Time Spent to mapped parallel version : 0.008344
+Filename path: ./testfiles/sample_file_100500.dat
+Time Spent to stream version : 0.194814
+Time Spent to mapped version : 0.15966
+Time Spent to mapped parallel version : 0.083749
+Filename path: ./testfiles/sample_file_900500.dat
+Time Spent to stream version : 1.67749
+Time Spent to mapped version : 1.40835
+Time Spent to mapped parallel version : 0.533055
+Filename path: ./testfiles/sample_file_150500.dat
+Time Spent to stream version : 0.265156
+Time Spent to mapped version : 0.235302
+Time Spent to mapped parallel version : 0.094803
+Filename path: ./testfiles/sample_file_580500.dat
+Time Spent to stream version : 1.03008
+Time Spent to mapped version : 0.91559
+Time Spent to mapped parallel version : 0.346296
+Filename path: ./testfiles/sample_file_260500.dat
+Time Spent to stream version : 0.447258
+Time Spent to mapped version : 0.406634
+Time Spent to mapped parallel version : 0.15793
+Filename path: ./testfiles/sample_file_570500.dat
+Time Spent to stream version : 1.04559
+Time Spent to mapped version : 0.900525
+Time Spent to mapped parallel version : 0.477941
+Filename path: ./testfiles/sample_file_80500.dat
+Time Spent to stream version : 0.161484
+Time Spent to mapped version : 0.128478
+Time Spent to mapped parallel version : 0.048767
+Filename path: ./testfiles/sample_file_120500.dat
+Time Spent to stream version : 0.214555
+Time Spent to mapped version : 0.193586
+Time Spent to mapped parallel version : 0.072762
+Filename path: ./testfiles/sample_file_630500.dat
+Time Spent to stream version : 1.08415
+Time Spent to mapped version : 0.988094
+Time Spent to mapped parallel version : 0.368428
+Filename path: ./testfiles/sample_file_450500.dat
+Time Spent to stream version : 0.776583
+Time Spent to mapped version : 0.707465
+Time Spent to mapped parallel version : 0.269527
+Filename path: ./testfiles/sample_file_880500.dat
+Time Spent to stream version : 1.53726
+Time Spent to mapped version : 1.38333
+Time Spent to mapped parallel version : 0.51857
+Filename path: ./testfiles/sample_file_390500.dat
+Time Spent to stream version : 0.676731
+Time Spent to mapped version : 0.610887
+Time Spent to mapped parallel version : 0.231653
+Filename path: ./testfiles/sample_file_620500.dat
+Time Spent to stream version : 1.08234
+Time Spent to mapped version : 0.975541
+Time Spent to mapped parallel version : 0.364822
+Filename path: ./testfiles/sample_file_1000500.dat
+Time Spent to stream version : 1.71669
+Time Spent to mapped version : 1.58366
+Time Spent to mapped parallel version : 0.745688
+Filename path: ./testfiles/sample_file_380500.dat
+Time Spent to stream version : 0.691228
+Time Spent to mapped version : 0.626204
+Time Spent to mapped parallel version : 0.285652
+Filename path: ./testfiles/sample_file_1070500.dat
+Time Spent to stream version : 2.03263
+Time Spent to mapped version : 1.78746
+Time Spent to mapped parallel version : 0.788396
+Filename path: ./testfiles/sample_file_930500.dat
+Time Spent to stream version : 1.70121
+Time Spent to mapped version : 1.50046
+Time Spent to mapped parallel version : 0.574119
+Filename path: ./testfiles/sample_file_730500.dat
+Time Spent to stream version : 1.26632
+Time Spent to mapped version : 1.14345
+Time Spent to mapped parallel version : 0.448068
+Filename path: ./testfiles/sample_file_1130500.dat
+Time Spent to stream version : 2.00955
+Time Spent to mapped version : 1.78312
+Time Spent to mapped parallel version : 0.750503
+Filename path: ./testfiles/unit_test_one.dat
+Time Spent to stream version : 0.003359
+Time Spent to mapped version : 0.000787
+Time Spent to mapped parallel version : 0.005148
+Filename path: ./testfiles/sample_file_220500.dat
+Time Spent to stream version : 0.404217
+Time Spent to mapped version : 0.355377
+Time Spent to mapped parallel version : 0.134721
+Filename path: ./testfiles/sample_file_1030500.dat
+Time Spent to stream version : 1.88431
+Time Spent to mapped version : 1.64625
+Time Spent to mapped parallel version : 0.688949
+Filename path: ./testfiles/sample_file_510500.dat
+Time Spent to stream version : 0.887978
+Time Spent to mapped version : 0.847978
+Time Spent to mapped parallel version : 0.433755
+Filename path: ./testfiles/sample_file_480500.dat
+Time Spent to stream version : 0.85737
+Time Spent to mapped version : 0.754437
+Time Spent to mapped parallel version : 0.311416
+Filename path: ./testfiles/sample_file_690500.dat
+Time Spent to stream version : 1.2228
+Time Spent to mapped version : 1.1452
+Time Spent to mapped parallel version : 0.497578
+Filename path: ./testfiles/sample_file_430500.dat
+Time Spent to stream version : 0.764501
+Time Spent to mapped version : 0.690484
+Time Spent to mapped parallel version : 0.269158
+Filename path: ./testfiles/sample_file_720500.dat
+Time Spent to stream version : 1.24458
+Time Spent to mapped version : 1.13346
+Time Spent to mapped parallel version : 0.42802
+Filename path: ./testfiles/sample_file_90500.dat
+Time Spent to stream version : 0.159722
+Time Spent to mapped version : 0.149088
+Time Spent to mapped parallel version : 0.059395
+Filename path: ./testfiles/sample_file_710500.dat
+Time Spent to stream version : 1.23781
+Time Spent to mapped version : 1.11649
+Time Spent to mapped parallel version : 0.41594
+Filename path: ./testfiles/sample_file_1090500.dat
+Time Spent to stream version : 1.8736
+Time Spent to mapped version : 1.72884
+Time Spent to mapped parallel version : 0.636249
+Filename path: ./testfiles/sample_file_110500.dat
+Time Spent to stream version : 0.191056
+Time Spent to mapped version : 0.234808
+Time Spent to mapped parallel version : 0.069715
+Filename path: ./testfiles/sample_file_70500.dat
+Time Spent to stream version : 0.131341
+Time Spent to mapped version : 0.110603
+Time Spent to mapped parallel version : 0.045198
+Filename path: ./testfiles/sample_file_100000000.dat
+Time Spent to stream version : 172.437
+Time Spent to mapped version : 157.985
+Time Spent to mapped parallel version : 57.6411
+Filename path: ./testfiles/unit_test_two.dat
+Time Spent to stream version : 0.00114
+Time Spent to mapped version : 0.001008
+Time Spent to mapped parallel version : 0.003419
+Filename path: ./testfiles/sample_file_40500.dat
+Time Spent to stream version : 0.086367
+Time Spent to mapped version : 0.064346
+Time Spent to mapped parallel version : 0.039975
+Filename path: ./testfiles/sample_file_1110500.dat
+Time Spent to stream version : 1.96004
+Time Spent to mapped version : 1.74348
+Time Spent to mapped parallel version : 0.663063
+Filename path: ./testfiles/sample_file_790500.dat
+Time Spent to stream version : 1.35929
+Time Spent to mapped version : 1.26145
+Time Spent to mapped parallel version : 0.476864
+Filename path: ./testfiles/sample_file_330500.dat
+Time Spent to stream version : 0.575418
+Time Spent to mapped version : 0.525037
+Time Spent to mapped parallel version : 0.213347
+Filename path: ./testfiles/sample_file_300500.dat
+Time Spent to stream version : 0.523045
+Time Spent to mapped version : 0.477201
+Time Spent to mapped parallel version : 0.194768
+Filename path: ./testfiles/sample_file_640500.dat
+Time Spent to stream version : 1.12239
+Time Spent to mapped version : 1.02665
+Time Spent to mapped parallel version : 0.388005
+Filename path: ./testfiles/sample_file_340500.dat
+Time Spent to stream version : 0.590081
+Time Spent to mapped version : 0.541977
+Time Spent to mapped parallel version : 0.211052
+Filename path: ./testfiles/sample_file_420500.dat
+Time Spent to stream version : 0.734893
+Time Spent to mapped version : 0.685096
+Time Spent to mapped parallel version : 0.305952
+Filename path: ./testfiles/sample_file_1040500.dat
+Time Spent to stream version : 1.87118
+Time Spent to mapped version : 1.6703
+Time Spent to mapped parallel version : 0.917571
+Filename path: ./testfiles/sample_file_410500.dat
+Time Spent to stream version : 0.73361
+Time Spent to mapped version : 0.702833
+Time Spent to mapped parallel version : 0.29162
+Filename path: ./testfiles/sample_file_270500.dat
+Time Spent to stream version : 0.471188
+Time Spent to mapped version : 0.428786
+Time Spent to mapped parallel version : 0.169592
+Filename path: ./testfiles/sample_file_1060500.dat
+Time Spent to stream version : 1.84687
+Time Spent to mapped version : 1.69794
+Time Spent to mapped parallel version : 0.729409
+Filename path: ./testfiles/sample_file_1150500.dat
+Time Spent to stream version : 2.02193
+Time Spent to mapped version : 1.83081
+Time Spent to mapped parallel version : 0.681583
+Filename path: ./testfiles/sample_file_560500.dat
+Time Spent to stream version : 0.99369
+Time Spent to mapped version : 0.88361
+Time Spent to mapped parallel version : 0.335343
+Filename path: ./testfiles/sample_file_780500.dat
+Time Spent to stream version : 1.35154
+Time Spent to mapped version : 1.23784
+Time Spent to mapped parallel version : 0.499627
+Filename path: ./testfiles/sample_file_20500.dat
+Time Spent to stream version : 0.036579
+Time Spent to mapped version : 0.034803
+Time Spent to mapped parallel version : 0.014622
+Filename path: ./testfiles/sample_file_760500.dat
+Time Spent to stream version : 1.31479
+Time Spent to mapped version : 1.19405
+Time Spent to mapped parallel version : 0.454196
+Filename path: ./testfiles/sample_file_310500.dat
+Time Spent to stream version : 0.53486
+Time Spent to mapped version : 0.487465
+Time Spent to mapped parallel version : 0.188134
+Filename path: ./testfiles/sample_file_1020500.dat
+Time Spent to stream version : 1.78703
+Time Spent to mapped version : 1.6164
+Time Spent to mapped parallel version : 0.614596
+Filename path: ./testfiles/sample_file_170500.dat
+Time Spent to stream version : 0.302755
+Time Spent to mapped version : 0.274535
+Time Spent to mapped parallel version : 0.114094
+Filename path: ./testfiles/sample_file_360500.dat
+Time Spent to stream version : 0.634477
+Time Spent to mapped version : 0.584922
+Time Spent to mapped parallel version : 0.229598
+Filename path: ./testfiles/sample_file_1010500.dat
+Time Spent to stream version : 1.75503
+Time Spent to mapped version : 1.61152
+Time Spent to mapped parallel version : 0.599949
+Filename path: ./testfiles/sample_file_750500.dat
+Time Spent to stream version : 1.31681
+Time Spent to mapped version : 1.20274
+Time Spent to mapped parallel version : 0.448958
+Filename path: ./testfiles/sample_file_1080500.dat
+Time Spent to stream version : 1.87871
+Time Spent to mapped version : 1.71611
+Time Spent to mapped parallel version : 0.629281
+Filename path: ./testfiles/sample_file_680500.dat
+Time Spent to stream version : 1.16947
+Time Spent to mapped version : 1.07215
+Time Spent to mapped parallel version : 0.409967
+Filename path: ./testfiles/sample_file_940500.dat
+Time Spent to stream version : 1.64015
+Time Spent to mapped version : 1.47228
+Time Spent to mapped parallel version : 0.551855
+Filename path: ./testfiles/sample_file_200500.dat
+Time Spent to stream version : 0.345441
+Time Spent to mapped version : 0.313202
+Time Spent to mapped parallel version : 0.123031
+Filename path: ./testfiles/sample_file_910500.dat
+Time Spent to stream version : 1.5858
+Time Spent to mapped version : 1.42893
+Time Spent to mapped parallel version : 0.53399
+Filename path: ./testfiles/sample_file_190500.dat
+Time Spent to stream version : 0.336721
+Time Spent to mapped version : 0.30007
+Time Spent to mapped parallel version : 0.117502
+Filename path: ./testfiles/sample_file_600500.dat
+Time Spent to stream version : 1.04131
+Time Spent to mapped version : 0.940147
+Time Spent to mapped parallel version : 0.413745
+Filename path: ./testfiles/sample_file_160500.dat
+Time Spent to stream version : 0.296724
+Time Spent to mapped version : 0.251983
+Time Spent to mapped parallel version : 0.099561
+Filename path: ./testfiles/sample_file_350500.dat
+Time Spent to stream version : 0.606982
+Time Spent to mapped version : 0.54918
+Time Spent to mapped parallel version : 0.215375
+Filename path: ./testfiles/sample_file_700500.dat
+Time Spent to stream version : 1.21572
+Time Spent to mapped version : 1.10018
+Time Spent to mapped parallel version : 0.443947
+Filename path: ./testfiles/sample_file_280500.dat
+Time Spent to stream version : 0.485014
+Time Spent to mapped version : 0.445032
+Time Spent to mapped parallel version : 0.169485
+Filename path: ./testfiles/sample_file_1160500.dat
+Time Spent to stream version : 1.16748
+Time Spent to mapped version : 1.05689
+Time Spent to mapped parallel version : 0.40823
+Filename path: ./testfiles/sample_file_550500.dat
+Time Spent to stream version : 0.945731
+Time Spent to mapped version : 0.885933
+Time Spent to mapped parallel version : 0.325195
+Filename path: ./testfiles/sample_file_140500.dat
+Time Spent to stream version : 0.251239
+Time Spent to mapped version : 0.21994
+Time Spent to mapped parallel version : 0.085192
+Filename path: ./testfiles/sample_file_460500.dat
+Time Spent to stream version : 0.800158
+Time Spent to mapped version : 0.721541
+Time Spent to mapped parallel version : 0.2715

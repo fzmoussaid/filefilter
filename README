@@ -1,7 +1,7 @@
-
+The project aims to retrieve the indexes of the k largest values in a file.
 
 This project contains four main parts:
-The first part generates test files.
+The first part generates test files into the the directory "testfiles".
 Then there is unit tests used for TDD. It checks that the algorithm is robust.
 Then, there are two implementations for the file filter. The first one reads from the stream. The second maps the file to memory.
 The final part compares the two versions through benchmarks. The file "test_res.txt" contains the result of benchmarks.
@@ -23,8 +23,11 @@ to read from stdin
 to read from file
 Use:
 ./benchmark
-to launch the benchmarks.
+to launch the benchmarks using the test files in the the directory "testfiles".
 
 The tests are run on files of different sizes (7.5kB to 2 GB).
-The result of benchmarks states that the implementation that maps the file through memory is more performant. 
+The result of benchmarks states that the implementation that maps the file through memory is more performant (expected as the file is accessed directly through memory).
+Another advantage of the memory mapping is that the file can be accessed by multiple process. So a parallel version is possible. 
+The implementation of the parallel version is done using the  OpenMP library. This version is included in the benchmarks. 
+(for file_size=2GB and k=30 : 60s for the parallel version vs 160s for the sequential one)
 The limitation is that this implementation is specific to UNIX based OS (linux in my case).
