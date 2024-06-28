@@ -78,25 +78,25 @@ data_pair* memory_mapping_parallel( int* fd, data_pair* res, uint32_t nb_instanc
     #pragma omp parallel for
     for (uint8_t section = 0; section < Nb_sections; section++){
         int start_offset = 0, end_offset = 0;
-        // std::cout << "section " << section << std::endl;
+        std::cout << "section " << section << std::endl;
         if (section == Nb_sections - 1) {
-            while(*(region + section * file_size / 4 + start_offset - 1) != '\n')
+            while(*(region + section * file_size / Nb_sections + start_offset - 1) != '\n')
                 start_offset++;
-            get_k_largest_section(region + section * file_size / 4 + start_offset, file_size / 4 + file_size % 4 + start_offset,  section_res + section * nb_instances, nb_instances);
+            get_k_largest_section(region + section * file_size / Nb_sections + start_offset, file_size / Nb_sections + file_size % Nb_sections + start_offset,  section_res + section * nb_instances, nb_instances);
         } else if (section == 0) {
-            while(*(region + (section + 1) * file_size / 4 + end_offset) != '\n') {
+            while(*(region + (section + 1) * file_size / Nb_sections + end_offset) != '\n') {
                 end_offset++;
             }
-            get_k_largest_section(region, file_size / 4 + end_offset, section_res + section * nb_instances, nb_instances);
+            get_k_largest_section(region, file_size / Nb_sections + end_offset, section_res + section * nb_instances, nb_instances);
         } else {
-            while(*(region + (section + 1) * file_size / 4 + end_offset) != '\n') {
+            while(*(region + (section + 1) * file_size / Nb_sections + end_offset) != '\n') {
                 end_offset++;
             }
 
-            while(*(region + section * file_size / 4 + start_offset - 1) != '\n') {
+            while(*(region + section * file_size / Nb_sections + start_offset - 1) != '\n') {
                 start_offset++;
             }
-            get_k_largest_section(region + section * file_size / 4 + start_offset, file_size / 4 + end_offset - start_offset, section_res + section * nb_instances, nb_instances);
+            get_k_largest_section(region + section * file_size / Nb_sections + start_offset, file_size / Nb_sections + end_offset - start_offset, section_res + section * nb_instances, nb_instances);
         }
     
     } 
@@ -187,11 +187,10 @@ void get_k_max( char* region,  uint64_t data_size, data_pair *res, uint32_t k) {
         } catch ( std::invalid_argument const &e ) {
             std::cout << ID_VALUE_ERROR << '\n';
             exit (EXIT_FAILURE);
-         }
-         catch ( std::out_of_range const &e ) {
+        } catch ( std::out_of_range const &e ) {
             std::cout << OVERFLOW_ERROR << '\n';
             exit (EXIT_FAILURE);
-         }
+        }
         
         n_max_val( res, ptr, k );
 
