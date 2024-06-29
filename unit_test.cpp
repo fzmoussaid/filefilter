@@ -1,6 +1,8 @@
 #include <cstdlib>
+#include <map>
 #include "headers/file_reader.hpp"
 
+using namespace std;
 //Utils
 
 // Sort the data pairs by index
@@ -33,23 +35,33 @@ bool check_equal_datapairs(data_pair* array1, data_pair* array2, uint32_t nb_ins
     return true;
 }
 
+bool compare_maps(map<string, int> map1, map<string, int> map2) {
+    return map1.size() == map2.size() && equal( map1.begin(), map1.end(), map2.begin() )
+}
+
 // Correctness tests
-uint32_t simple_test() {
-    std::string file ="tests/simple_test.txt";
+int simple_test() {
+    string file ="tests/simple_test.txt";
     uint32_t X = 5;
 
-    data_pair* res_test_one = (data_pair*)calloc(nb_instances, 2 * sizeof(uint32_t));
+    map<string, int> res_test_one = x_largest_values(file, X);
+    map<string, int> expected_res;
 
-    file_stream_filter(file, nb_instances, res_stream);
+    expected_res["1789"] = 290;
+    expected_res["1862"] = 2972;
+    expected_res["17801"] = 156;
+    expected_res["982"] = 78;
+    expected_res["728261"] = 78;
 
-    if (check_equal_datapairs(res_stream, res_test_one, X)) {
+    if (compare_maps(expected_res, res_test_one)) {
         std::cout << "Correct Results for stream version. " << std::endl; 
     } else {
         std::cout << "Wrong Results for stream version." << std::endl; 
     }
-
+    return 0;
 }
 
 int main(int argc, char *argv[]) {
     simple_test();
+    return 0;
 }
